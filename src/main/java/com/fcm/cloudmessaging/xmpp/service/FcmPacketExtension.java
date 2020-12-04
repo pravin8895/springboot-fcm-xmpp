@@ -1,6 +1,5 @@
 package com.fcm.cloudmessaging.xmpp.service;
 
-
 import org.jivesoftware.smack.packet.DefaultPacketExtension;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
@@ -23,8 +22,7 @@ public class FcmPacketExtension extends DefaultPacketExtension {
 
 	@Override
 	public String toXML() {
-		return String.format("<%s xmlns=\"%s\">%s</%s>", "gcm", "google:mobile:data", json,
-				"gcm");
+		return String.format("<%s xmlns=\"%s\">%s</%s>", "gcm", "google:mobile:data", json, "gcm");
 	}
 
 	public Packet toPacket() {

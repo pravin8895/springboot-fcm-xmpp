@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fcm.cloudmessaging.xmpp.service.FcmNotificationService;
 
 @RestController
-@RequestMapping(value="/fcmxmpp")
+@RequestMapping(value = "/fcmxmpp")
 public class FcmXmppController {
-	
+
 	@Autowired
 	private FcmNotificationService fcmNotificationService;
-	
-	@PostMapping(value="/notifyByFcm" , consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void notifyByFcm(Map<String,Object> request) {
+
+	@PostMapping(value = "/notifyByFcm", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void notifyByFcm(Map<String, Object> request) {
 		fcmNotificationService.notify(request);
-		
+
 	}
 
 }

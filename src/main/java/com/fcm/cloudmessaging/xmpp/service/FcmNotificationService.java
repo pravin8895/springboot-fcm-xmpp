@@ -18,30 +18,30 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FcmNotificationService {
-	
+
 	@Autowired
 	private Environment environment;
-	
-	public void notify(Map<String,Object> requestData) {
+
+	public void notify(Map<String, Object> requestData) {
 		String to = requestData.get("fcm_id").toString();
-	    String serverUserName = environment.getProperty("server_username");
-	    String server_key = environment.getProperty("server_key");
-        ConnectionConfiguration config = createConnectionConfig();
+		String serverUserName = environment.getProperty("server_username");
+		String server_key = environment.getProperty("server_key");
+		ConnectionConfiguration config = createConnectionConfig();
 		XMPPConnection connection = new XMPPConnection(config);
-			try {
-				connection.connect();
-				connection.login(serverUserName, server_key);
-			} catch (XMPPException e) {
-				e.printStackTrace();
-			}
-			Map<String,Object>message = formNotificationPayload(requestData);	
-			Packet request = new FcmPacketExtension(JSONValue.toJSONString(message)).toPacket();
-			connection.sendPacket(request);
+		try {
+			connection.connect();
+			connection.login(serverUserName, server_key);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> message = formNotificationPayload(requestData);
+		Packet request = new FcmPacketExtension(JSONValue.toJSONString(message)).toPacket();
+		connection.sendPacket(request);
 	}
 
 	private ConnectionConfiguration createConnectionConfig() {
 		String hostUrl = environment.getProperty("host_url");
-	    int port = Integer.parseInt(environment.getProperty("port").toString());
+		int port = Integer.parseInt(environment.getProperty("port").toString());
 		ConnectionConfiguration config = new ConnectionConfiguration(hostUrl, port);
 		config.setSecurityMode(SecurityMode.enabled);
 		config.setReconnectionAllowed(true);
@@ -50,12 +50,12 @@ public class FcmNotificationService {
 		config.setSocketFactory(SSLSocketFactory.getDefault());
 		config.setDebuggerEnabled(true);
 		return config;
-		
+
 	}
 
 	private Map<String, Object> formNotificationPayload(Map<String, Object> requestData) {
-		Map<String,Object> message = new HashMap<>();
-		Map<String,Object> notificationPayload = new HashMap<>();
+		Map<String, Object> message = new HashMap<>();
+		Map<String, Object> notificationPayload = new HashMap<>();
 		message.put("to", requestData.get("fcm_id").toString());
 		message.put("message_id", UUID.randomUUID().toString());
 		notificationPayload.put("title", requestData.get("title").toString());
